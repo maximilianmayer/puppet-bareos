@@ -101,39 +101,23 @@
 # Copyright 2016 Thomas Bendler, unless otherwise noted.
 #
 class bareos (
-  $manage_repo              = true,
-  $type_fd                  = false,
-  $type_sd                  = false,
-  $type_dir                 = false,
-  $type_webui               = false,
-  $db_password              = $bareos::params::db_password,
-  $db_password_hash         = $bareos::params::db_password_hash,
-  $client_password          = $bareos::params::client_password,
-  $monitor_password         = $bareos::params::monitor_password,
-  $storage_password         = $bareos::params::storage_password,
-  $storage_daemon           = $bareos::params::storage_daemon,
-  $mail_hub                 = $bareos::params::mail_hub,
-  $mail_group               = $bareos::params::mail_group,
-  $backup_clients           = [],
-  $webui_user               = { 'admin' => 'webui-password-for-bareos' }
+  Boolean $manage_repo      = true,
+  Boolean $type_fd          = false,
+  Boolean $type_sd          = false,
+  Boolean $type_dir         = false,
+  Boolean $type_webui       = false,
+  String $db_password       = $bareos::params::db_password,
+  String $db_password_hash  = $bareos::params::db_password_hash,
+  String $client_password   = $bareos::params::client_password,
+  String $monitor_password  = $bareos::params::monitor_password,
+  String $storage_password  = $bareos::params::storage_password,
+  String $storage_daemon    = $bareos::params::storage_daemon,
+  String $mail_hub          = $bareos::params::mail_hub,
+  String $mail_group        = $bareos::params::mail_group,
+  Array $backup_clients     = [],
+  Hash $webui_user          = { 'admin' => 'webui-password-for-bareos' }
 ) inherits bareos::params {
 
-  # Validate parameters
-  validate_bool($bareos::manage_repo)
-  validate_bool($bareos::type_fd)
-  validate_bool($bareos::type_sd)
-  validate_bool($bareos::type_dir)
-  validate_bool($bareos::type_webui)
-  validate_string($bareos::db_password)
-  validate_string($bareos::db_password_hash)
-  validate_string($bareos::client_password)
-  validate_string($bareos::monitor_password)
-  validate_string($bareos::storage_password)
-  validate_string($bareos::storage_daemon)
-  validate_string($bareos::mail_hub)
-  validate_string($bareos::mail_group)
-  validate_array($bareos::backup_clients)
-  validate_hash($bareos::webui_user)
 
   # Start workflow
   if $bareos::params::linux {
