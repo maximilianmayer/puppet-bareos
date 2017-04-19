@@ -3,16 +3,17 @@
 # This class contain the repository for bareos packages
 #
 class bareos::install::repo (
-  String $bareos_version = '15.2'
+  String $bareos_version = '16.2'
 ){
 
+	$bv_repo = regsubst($bareos_version,'\.','\-')
   # Define repository
   case $::lsbdistid {
     'CentOS': {
-      $repository_file = "c${::lsbmajdistrelease}_${bareos_version}.repo"
+      $repository_file = "c${::lsbmajdistrelease}_${bv_repo}.repo"
     }
     default: {
-      $repository_file = "rhel${::lsbmajdistrelease}_${bareos_version}.repo"
+      $repository_file = "rhel${::lsbmajdistrelease}_${bv_repo}.repo"
     }
   }
   $module_repository_file = "puppet:///modules/bareos/repo/${repository_file}"
