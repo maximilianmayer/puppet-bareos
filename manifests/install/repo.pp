@@ -2,16 +2,17 @@
 #
 # This class contain the repository for bareos packages
 #
-class bareos::install::repo {
+class bareos::install::repo (
+  String $bareos_version = '15.2'
+){
 
   # Define repository
-  $bareos_version = '15-2'
   case $::lsbdistid {
     'CentOS': {
       $repository_file = "c${::lsbmajdistrelease}_${bareos_version}.repo"
     }
     default: {
-      $repository_file = "rhel${::lsbmajdistrelease}_15-2.repo"
+      $repository_file = "rhel${::lsbmajdistrelease}_${bareos_version}.repo"
     }
   }
   $module_repository_file = "puppet:///modules/bareos/repo/${repository_file}"
@@ -26,7 +27,7 @@ class bareos::install::repo {
 
   # yum/rpm configuration
   exec { 'rpm-key-import':
-    command     => 'rpm --import http://download.bareos.org/bareos/release/15.2/CentOS_7/repodata/repomd.xml.key',
+    command     => "rpm --import http://download.bareos.org/bareos/release/${bareos_version}/CentOS_7/repodata/repomd.xml.key",
     path        => '/bin:/sbin:/usr/bin:/usr/sbin',
     refreshonly => true,
   }
