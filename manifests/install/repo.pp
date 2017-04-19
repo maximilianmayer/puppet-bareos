@@ -6,14 +6,16 @@ class bareos::install::repo (
   String $bareos_version = '16.2'
 ){
 
-	$bv_repo = regsubst($bareos_version,'\.','-')
+	$bv_repo  = regsubst($bareos_version,'\.','-')
+	$osmajver = $facts['os']['release']['major']
+
   # Define repository
   case $facts['os']['name'] {
     'CentOS': {
-      $repository_file = "c${::lsbmajdistrelease}_${bv_repo}.repo"
+      $repository_file = "c${osmajver}_${bv_repo}.repo"
     }
     default: {
-      $repository_file = "rhel${::lsbmajdistrelease}_${bv_repo}.repo"
+      $repository_file = "rhel${osmajver}_${bv_repo}.repo"
     }
   }
   $module_repository_file = "puppet:///modules/bareos/repo/${repository_file}"
@@ -28,7 +30,7 @@ class bareos::install::repo (
 
   # yum/rpm configuration
   exec { 'rpm-key-import':
-    command     => "rpm --import http://download.bareos.org/bareos/release/${bareos_version}/CentOS_7/repodata/repomd.xml.key",
+    command     => "rpm --import http://download.bareos.org/bareos/release/${bareos_version}/CentOS_${osmajver}/repodata/repomd.xml.key",
     path        => '/bin:/sbin:/usr/bin:/usr/sbin',
     refreshonly => true,
   }
