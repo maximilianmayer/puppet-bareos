@@ -6,9 +6,9 @@ class bareos::install::repo (
   String $bareos_version = '16.2'
 ){
 
-	$bv_repo = regsubst($bareos_version,'\.','\-')
+	$bv_repo = regsubst($bareos_version,'\.','-')
   # Define repository
-  case $::lsbdistid {
+  case $facts['os']['name'] {
     'CentOS': {
       $repository_file = "c${::lsbmajdistrelease}_${bv_repo}.repo"
     }
